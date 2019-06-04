@@ -1,0 +1,14 @@
+<script type="text/javascript">
+	let input = "aabccd";
+	let tempObj = {};
+	for(let i = 0; i < input.length; i++) {
+		if (tempObj[input[i]]) {
+			tempObj[input[i]] += 1;
+		} else {
+			tempObj[input[i]] = 1;
+		}
+	}
+	console.log(tempObj);
+	let result = Object.keys(tempObj).filter(item => tempObj[item] === 1);
+	console.log(result);
+</script>

@@ -1,0 +1,28 @@
+<script type="text/javascript">
+	function mergetSort(arr) {
+		if (arr.length == 1) return arr;
+		const middle = Math.floor(arr.length / 2);
+		let leftArr = arr.slice(0, middle);
+		let rightArr = arr.slice(middle);
+		return merge(mergetSort(leftArr), mergetSort(rightArr));
+	}
+
+	function merge(left, right) {
+		let result = [];
+		let leftIdx = 0;
+		let rightIdx = 0;
+		while (leftIdx < left.length && rightIdx < right.length) {
+			if (left[leftIdx] < right[rightIdx]) {
+				result.push(left[leftIdx]);
+				leftIdx++;
+			} else {
+				result.push(right[rightIdx]);
+				rightIdx++;
+			}
+		}
+		console.log(left,leftIdx, right, rightIdx);
+		return result.concat(left.slice(leftIdx)).concat(right.slice(rightIdx));
+	}
+	let x = [3, 5, 1, 7, 2, 4];
+	console.log(mergetSort(x));
+</script>

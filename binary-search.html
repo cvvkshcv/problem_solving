@@ -1,0 +1,70 @@
+<script type="text/javascript">
+	function Node(val) {
+		this.value = val;
+		this.left = null;
+		this.right = null;
+	}
+
+	Node.prototype.addNode = function(newNode) {
+		if (newNode.value > this.value) {
+			if (!this.right) this.right = newNode;
+			this.right.addNode(newNode);
+		}
+		else if (newNode.value < this.value) {
+			if (!this.left) this.left = newNode;
+			this.left.addNode(newNode);	
+		}
+	}
+
+	Node.prototype.visit = function() {
+		if(this.left) this.left.visit();
+		console.log(this.value);
+		if(this.right) this.right.visit();
+	}
+
+	Node.prototype.search = function(val) {
+		if(this.value == val) {
+			return this;
+		} else if (this.value < val) {
+			if (this.right) {
+				return this.right.search(val)
+			}
+		} else if (this.value > val) {
+			if (this.left) {
+				return this.left.search(val)
+			}
+		}
+	}
+
+	function Tree() {
+		this.root = null;
+	}
+
+	Tree.prototype.addChild = function(val) {
+		let newNode = new Node(val);
+		(this.root == null) ? this.root = newNode : this.root.addNode(newNode);
+	}
+
+	Tree.prototype.traverse = function() {
+		this.root.visit();
+	}
+
+	Tree.prototype.search = function(val) {
+		let searchVal = this.root.search(val);
+		if (searchVal) {
+			console.log('Value found ', searchVal);
+		} else {
+			console.log('Value node found');
+		}
+	}
+
+	const tree = new Tree();
+	tree.addChild(4);
+	tree.addChild(5);
+	tree.addChild(1);
+	tree.addChild(6);
+	tree.addChild(3);
+	tree.traverse();
+	tree.search(2);
+	// console.log(tree);
+</script>

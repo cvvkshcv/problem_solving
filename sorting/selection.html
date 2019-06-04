@@ -1,0 +1,14 @@
+<script type="text/javascript">
+	let arr = [3, 5, 1, 7, 2, 4];
+	let length = arr.length
+	let smaller;
+	let idx;
+	for (let i = 0; i < length; i++) {
+		for (let j = i + 1; j < length; j++) {
+			if (arr[i] > arr[j]) {
+				[arr[i], arr[j]] = [arr[j], arr[i]];
+			}
+		}
+	}
+	console.log(arr);
+</script>

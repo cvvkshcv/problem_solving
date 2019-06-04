@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Closure</title>
+</head>
+<body>
+
+<script type="text/javascript">
+	function x() {
+		var outerVar = 10;
+		 var y = function() {
+			var innerVar = 20;
+			console.log(outerVar);
+			console.log(innerVar);
+			var z = function() {
+				var innnnerVal = 30;
+				console.log(outerVar++);
+				console.log(innerVar++);
+			}
+			return z;
+		}
+		return y;
+	}
+	console.dir(x()());
+	console.dir(x()());
+	console.dir(x()());
+</script>
+</body>
+</html>

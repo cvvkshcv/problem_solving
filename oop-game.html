@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<style>
+	* {
+		font-family: Segoe ui light,sans-serif;
+	}
+	#app {
+	    height: 700px;
+	    width: 700px;
+	    margin: 0 auto;
+	    background-color: #f6d338;
+	    border: 1px solid #caa85b;
+	    box-shadow: 7px 7px 63px #e9ce7f;
+	}
+	#app .grid {
+    	box-sizing: border-box;
+    	border: 1px solid #caa85b;
+    	float: left;
+	}
+	#app .grid.active {
+		background-color: #fff;
+	}
+	#score-card {
+		text-align: center;
+	}
+	#score-card h3{
+		display: inline-block;
+		margin: 0 5px;
+	}
+	</style>
+</head>
+
+<body>
+	<div id="score-card">
+		<h3>Score : <span id="score">0</span></h3>
+		|
+		<h3>Level :<span id="level">0</span></h3>
+		|
+		<h3>Life :<span id="life">0</span></h3>
+	</div>
+	<div id="app"></div>
+</body>
+</html>
+
+<script>
+/*
+	class Stack {
+		constructor(data) {
+			this.data = [];
+			if (data) this.data.push(data);
+			console.log(this);
+		}
+		
+		add(data) {
+			this.data.push(data);
+			console.log(this);
+		}
+		
+		remove() {
+			this.data.pop();
+			console.log(this);
+		}
+		
+		items() {
+			return this.data;
+		}
+		
+		search(data) {
+			return this.data.indexOf(data);
+		}
+		
+		isEmpty() {
+			return !this.data.length;
+		}
+		
+		peek() {
+			return this.data[this.data.length - 1/];
+		}
+	}
+	
+	let s = new Stack();
+	s.add(2);
+	s.add(3);
+	s.add(7);
+	s.add(1);
+	console.log(s.search(3));
+	console.log(s.items());
+	console.log(s.peek());
+*/
+</script>
+
+<script>
+	function Game(config) {
+		this.defaultConfig = {
+			level : 1,
+			score : 0,
+			changeInterval : 3,
+			life : 3,
+			levelScore : 10,
+			life : 3
+		};
+		this._config = config;
+		this.config = Object.assign({}, this.defaultConfig, config);
+		this.app = document.getElementById('app');
+		this.score = document.getElementById('score');
+		this.life = document.getElementById('life');
+		this.level = document.getElementById('level');
+		this.timer;
+		this.addingEvent = this.addingEvent.bind(this);
+		let localConfig = localStorage.getItem('config');
+		if (localConfig) {
+			let r = confirm('Already game in between, you want to continue the game?');
+			if (r) {
+				this.config = Object.assign({}, this.defaultConfig, JSON.parse(localConfig));
+			} else {
+				localStorage.clear();
+			}
+		}
+	}
+
+	Game.prototype.init = function() {
+		this.initGrids();
+		this.updateScoreCard();
+	}
+
+	Game.prototype.initGrids = function() {
+		this.config.grids = this.config.level * 4;
+		this.gridSize = this.config.grids * this.config.level;
+		this.app.innerHTML = '';
+		this.app.innerHTML = Array.from({length : this.gridSize }, (val, i) => {
+			return `<div class="grid grid_${i + 1}" style="width:${ 100 / this.config.grids * 2}%;height:${ 100 / this.config.grids * 2 }%;"></div>`;
+		}).join('');
+		this.initTimer();
+	}
+
+	Game.prototype.initTimer = function() {
+		this.getAllGridsAndAddEvent();
+		this.grids.forEach(grid => grid.classList.remove('active'));
+		this.grids[Math.floor((Math.random() * this.gridSize))].classList.add('active');
+		this.destroyTimer();
+		this.timer = setInterval(() => {
+			this.grids.forEach(grid => grid.classList.remove('active'));
+			let i = Math.floor((Math.random() * this.gridSize));
+			this.grids[i].classList.add('active');
+		}, this.config.changeInterval * 1000);
+	}
+
+	Game.prototype.getAllGridsAndAddEvent = function() {
+		this.grids = this.app.querySelectorAll('.grid');
+		this.grids.forEach((grid, i) => {
+			grid.removeEventListener('click', this.addingEvent);
+			grid.addEventListener('click', this.addingEvent);
+		});
+	}
+
+	Game.prototype.addingEvent = function(e) {
+		if (e.target.classList.contains('active')) {
+			this.config.score++;
+			this.destroyTimer();
+			if (0 === (this.config.score % this.config.levelScore)) {
+				this.config.level++;
+				this.config.changeInterval -= 0.5;
+				this.initGrids();
+			} else {
+				this.initTimer();
+			}
+		} else {
+			this.config.life--;
+			if (this.config.life === 0) {
+				this.restartGame();
+			}
+		}
+		this.updateScoreCard();
+		this.saveGame();
+	}
+
+	Game.prototype.saveGame = function() {
+		localStorage.setItem('config', JSON.stringify(this.config));
+	}
+
+	Game.prototype.restartGame = function() {
+		localStorage.clear();
+		alert('Gameover');
+		this.config = Object.assign({}, this.defaultConfig, this._config);
+		this.initGrids();
+	}
+
+	Game.prototype.updateScoreCard = function() {
+		this.score.innerHTML = this.config.score;
+		this.life.innerHTML = this.config.life;
+		this.level.innerHTML = this.config.level;
+	}
+
+	Game.prototype.destroyTimer = function() {
+		if (this.timer) clearInterval(this.timer);
+	}
+	
+	let game = new Game();
+	game.init();
+</script>

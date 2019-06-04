@@ -1,0 +1,39 @@
+<script type="text/javascript">
+	let a = ['','one ','two ','three ','four ', 'five ','six ','seven ','eight ','nine ','ten ','eleven ','twelve ','thirteen ','fourteen ','fifteen ','sixteen ','seventeen ','eighteen ','nineteen '];
+	let b = ['', '', 'twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety'];
+	function inWords (num) {
+	    if ((num = num.toString()).length > 12) return 'overflow';
+	    n = ('0000000000000' + num).substr(-12).match(/^(\d{3})(\d{3})(\d{3})(\d{3})$/);
+	    console.log(num);
+	    str = '';
+	    str += (hundredsInWords(n[1])) ?  hundredsInWords(n[1]) + 'billion ' : '';
+	    str += (hundredsInWords(n[2])) ?  hundredsInWords(n[2]) + 'million ' : '';
+	    str += (hundredsInWords(n[3])) ? hundredsInWords(n[3]) + 'thousand ' : '';
+	    str += hundredsInWords(n[4]);
+	    return str;
+	}
+	function hundredsInWords(str) {
+		let newStr = '';
+		if (Number(str[0])) {
+			newStr += a[Number(str[0])] + 'hundred '
+		}
+		if (Number(str[1])) {
+			newStr += a[Number(str[1] + str[2])]
+			return newStr;
+		}
+		if (Number(str[2])) {
+			newStr += a[Number(str[2])] + ' '
+		}
+		return newStr;
+	}
+	console.log(inWords(1));
+	console.log(inWords(10));
+	console.log(inWords(100));
+	console.log(inWords(1000));
+	console.log(inWords(10000));
+	console.log(inWords(100000));
+	console.log(inWords(1000000));
+	console.log(inWords(10000000));
+	console.log(inWords(100000000));
+	console.log(inWords(1000000000));
+</script>

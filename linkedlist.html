@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en"><body></body></html>
+<script>
+	class Node {
+		constructor(data, next) {
+			this.data = data;
+			this.next = next;
+		}
+	}
+	class LinkedList {
+		constructor() {
+			this.head = null;
+		}
+		
+		addItem(data) {
+			let newNode = new Node(data);
+			if(this.head == null) {
+				this.head = newNode;
+			} else {
+				let node = this.head;
+				while (node.next != null) {
+					node = node.next;
+				}
+				node.next = newNode;
+			}
+		}
+		
+		deleteItem(val) {
+			if(this.head == null) {
+				console.log('No elements to delete');
+			} else {
+				let node = this.head;
+				let nodePrve = null;
+				while (node.data !== val) {
+					nodePrve = node;
+					node = node.next;
+				}
+				nodePrve.next = node.next;
+			}
+		}
+	}
+	
+	let list = new LinkedList();
+	list.addItem(8);
+	list.addItem(10);
+	list.addItem(6);
+	list.addItem(7);
+	console.log(list.head);
+	let node = list.head;
+	while (node.next != null) {
+		nodePrve = node;
+		node = node.next;
+		if (nodePrve.data < node.data) {
+			nodePrve.next = node.next;
+		}
+	}
+	console.log(list);
+	
+</script>
