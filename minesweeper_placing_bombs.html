@@ -1,0 +1,53 @@
+<script type="text/javascript">
+	let rows = 8;
+	let cols = 8;
+	let bombsPlacement = [[0, 0], [1, 1], [2, 3], [3, 3], [7, 2],[4, 7], [5, 4]];
+	let result = createMinesweeper(bombsPlacement);
+	let rev = reveal(result, 0, 1);
+	console.log(rev);
+
+	function createMinesweeper(bombs) {
+		let gameBoard = [...Array(rows)].map(a => Array(cols).fill(0));
+		for(let i = 0; i < bombs.length; i++) {
+			let bombRow = bombs[i][0];
+			let bombCol = bombs[i][1];
+			gameBoard[bombRow][bombCol] = 'x';
+			for(let i = bombRow - 1; i <= bombRow + 1; i++) {
+				for(let j = bombCol - 1; j <= bombCol + 1; j++) {
+					if ((i >= 0 && i < rows) && (j >= 0 && j < cols) && gameBoard[i][j] !== 'x') {
+						gameBoard[i][j] += 1;
+					}
+				}
+			}
+		}
+		return gameBoard
+	}
+
+
+	function reveal(gameBoard, clickedRow, clickedCol) {
+		if (gameBoard[clickedRow][clickedCol] === 'x') {
+			console.log('Stepped on a bomb X-(');
+		} else if (gameBoard[clickedRow][clickedCol] !== 0) {
+			gameBoard[clickedRow][clickedCol] = gameBoard[clickedRow][clickedCol]+'';
+			return gameBoard;
+		}
+		else {
+			return explore(clickedRow, clickedCol);
+		}
+
+		function explore(newRow, newCol) {
+			for(let i = newRow - 1; i <= newRow + 1; i++) {
+				for(let j = newCol - 1; j <= newCol + 1; j++) {
+					if ((i >= 0 && i < rows) && (j >= 0 && j < cols) && gameBoard[i][j] !== 'O' && gameBoard[i][j] === 0)
+					{
+						gameBoard[i][j] = 'O';
+						explore(i, j);
+					}
+				}
+			}
+			return gameBoard;
+		}
+
+	}
+
+</script>
