@@ -1,0 +1,31 @@
+<script>
+let user1 = ['/home', '/register', '/login', '/user', '/one', '/pink', '/two']
+let user2 = ['/home', '/red', '/login', '/user', '/one', '/pink']
+
+let obj = {};
+user2.forEach((item, i) => obj[item] = i); // storing 1 array's(user2) all values inside an object as key
+
+let finalStart = 0;
+let finalEnd = 0;
+let longest = -1;
+
+for (let i = 0; i < user1.length; i++) { // looping another array (user1 array)
+  let currentWordIndex = obj[user1[i]]; // get index of current word from object
+  if (currentWordIndex >= 0) {
+    let start = currentWordIndex;
+    let end = currentWordIndex;
+    while (obj[user1[i + 1]] === end + 1) { // loop through the next value and index until it matches
+      i++;
+      end++;
+    }
+    if (end - start >= longest) {
+      // if the diff b/w end and start is more than the prev,
+      // then store those start and end index
+      longest = end - start;
+      finalStart = start;
+      finalEnd = end;
+    }
+  }
+}
+console.log(user2.slice(finalStart, finalEnd + 1));
+</script>
