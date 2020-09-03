@@ -1,0 +1,36 @@
+<body>
+
+  <form id="my-form">
+    <input name="form.x.y" placeholder="form.x.y" />
+    <input name="form.x.y.z" placeholder="form.x.y.z" />
+    <input name="form.a.b" placeholder="form.a.b" />
+    <input name="form.x.y" placeholder="form.x.y" />
+  </form>
+  <pre id="res"></pre>
+ 
+</body>
+ 
+<script>
+  const form = document.getElementById('my-form');
+  const childLen = form.children.length;
+  const strs = [];
+
+  for (let i = 0; i < childLen; i++) {
+    const input = form.children[i];
+    console.log(input.name);
+    strs.push(input.name.split('.'));
+  }
+
+  const obj = {};
+  strs.forEach(str => {
+     str.reduce((acc, cur) => {
+         if (!acc[cur]) {
+           acc[cur] = {};
+           return acc[cur];
+         } else {
+           return acc[cur];
+         }
+     }, obj);
+  });
+  document.getElementById('res').innerHTML = JSON.stringify(obj, null, 2)
+</script>
